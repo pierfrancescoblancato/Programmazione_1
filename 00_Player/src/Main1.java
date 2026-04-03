@@ -1,7 +1,11 @@
+import javax.swing.SwingUtilities;
+
 public class Main1 {
     public static void main(String[] args) {
-        Player p1 = new Player("Roberto", "Baggio", 10, Position.F, Nationality.ITA, true);
-
-        System.out.println(p1.toString());
+        // Starts the GUI in the correct Swing Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            PlayerManagerGUI app = new PlayerManagerGUI();
+            app.setVisible(true);
+        });
     }
 }

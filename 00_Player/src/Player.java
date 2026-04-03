@@ -37,38 +37,93 @@ class Player {
     private boolean isCaptain;
 
     public Player(String name, String surname, int numberOfTshirt, Position position, Nationality nationality, boolean isCaptain) {
-        this.name = name;
-        this.surname = surname;
-        this.numberOfTshirt = numberOfTshirt;
-        this.position = position;
-        this.nationality = nationality;
-        this.isCaptain = isCaptain;
+        this.setName(name);
+        this.setSurname(surname);
+        this.setNumberOfTshirt(numberOfTshirt);
+        this.setPosition(position);
+        this.setNationality(nationality);
+        this.setCaptain(isCaptain);
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        String cleanedName;
+
+        if (name != null) {
+            cleanedName = name.trim();
+        } else {
+            cleanedName = null;
+        }
+
+        if (cleanedName == null || cleanedName.isEmpty()) {
+            throw new IllegalArgumentException("The name is not empty");
+        }
+        this.name = cleanedName;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
+        String cleanedSurname;
+
+        if (surname != null) {
+            cleanedSurname = surname.trim();
+        } else {
+            cleanedSurname = null;
+        }
+
+        if (cleanedSurname == null || cleanedSurname.isEmpty()) {
+            throw new IllegalArgumentException("The surname is not empty");
+        }
+
+        this.surname = cleanedSurname;
+    }
+
+    public int getNumberOfTshirt() {
+        return numberOfTshirt;
     }
 
     public void setNumberOfTshirt(int numberOfTshirt) {
+        if (numberOfTshirt < 1 || numberOfTshirt > 100) {
+            throw new IllegalArgumentException("The number of tShirt is between 1 and 100");
+        }
         this.numberOfTshirt = numberOfTshirt;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 
     public void setPosition(Position position) {
         this.position = position;
     }
 
+    public Nationality getNationality() {
+        return nationality;
+    }
+
     public void setNationality(Nationality nationality) {
         this.nationality = nationality;
     }
+
+    public boolean isCaptain() {
+        return isCaptain;
+    }
+
+    public void setCaptain(boolean captain) {
+        isCaptain = captain;
+    }
+
     public String toString() {
-        String player = String.format("%s %d %s %c",
+        String player = String.format("%s %d %s %c.",
                 this.nationality.getFlag(),
                 this.numberOfTshirt,
-                this.surname,
+                this.surname.toUpperCase(),
                 this.name.charAt(0)
         );
 
