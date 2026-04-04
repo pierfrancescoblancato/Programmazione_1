@@ -1,8 +1,9 @@
+import java.io.Serializable;
 enum Position {
-    G, // Goalkeeper
-    D, // Defender
-    M, // Midfielder
-    F  // Forward
+    GK,
+    CB, RB, LB, RWB, LWB,
+    CDM, CM, RM, LM, CAM,
+    RW, LW, CF, ST
 }
 
 enum Nationality {
@@ -27,7 +28,9 @@ enum Nationality {
     }
 }
 
-class Player {
+class Player implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
     private String surname;
@@ -35,6 +38,9 @@ class Player {
     private Position position;
     private Nationality nationality;
     private boolean isCaptain;
+
+    public Player() {
+    }
 
     public Player(String name, String surname, int numberOfTshirt, Position position, Nationality nationality, boolean isCaptain) {
         this.setName(name);

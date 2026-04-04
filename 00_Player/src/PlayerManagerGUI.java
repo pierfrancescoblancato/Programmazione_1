@@ -1,11 +1,18 @@
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerManagerGUI extends JFrame {
 
-    private DefaultListModel<Player> listModel;
-    private JList<Player> playerList;
+    private List<Player> playersList;
+    private JTable playerTable;
+    private DefaultTableModel tableModel;
 
     private JTextField nameField;
     private JTextField surnameField;
@@ -16,25 +23,38 @@ public class PlayerManagerGUI extends JFrame {
 
     public PlayerManagerGUI() {
         setTitle("Team Management - Players");
-        setSize(700, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(850, 450);
+
+        // Disabilitiamo la chiusura automatica standard per gestirla noi col salvataggio
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout(10, 10));
 
-        // --- LEFT PANEL (Player List) ---
-        listModel = new DefaultListModel<>();
-        playerList = new JList<>(listModel);
-        playerList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        playersList = new ArrayList<>();
 
-        playerList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting() && playerList.getSelectedIndex() != -1) {
-                populateForm(playerList.getSelectedValue());
+        // --- LEFT PANEL (Player Table) ---
+        String[] columnNames = {"Name", "Surname", "Number", "Position", "Nat.", "Captain"};
+
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        playerTable = new JTable(tableModel);
+        playerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        playerTable.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && playerTable.getSelectedRow() != -1) {
+                int selectedRow = playerTable.getSelectedRow();
+                populateForm(playersList.get(selectedRow));
             }
         });
 
-        JScrollPane listScroller = new JScrollPane(playerList);
-        listScroller.setBorder(BorderFactory.createTitledBorder("Player List"));
-        listScroller.setPreferredSize(new Dimension(300, 0));
+        JScrollPane listScroller = new JScrollPane(playerTable);
+        listScroller.setBorder(BorderFactory.createTitledBorder("Player Database"));
+        listScroller.setPreferredSize(new Dimension(450, 0));
         add(listScroller, BorderLayout.WEST);
 
         // --- RIGHT PANEL (Form and Buttons) ---
@@ -94,7 +114,20 @@ public class PlayerManagerGUI extends JFrame {
         add(rightPanel, BorderLayout.CENTER);
 
         // Add default player for testing
-        listModel.addElement(new Player("Roberto", "Baggio", 10, Position.F, Nationality.ITA, true));
+        addPlayerToTable(new Player("Roberto", "Baggio", 10, Position.RWB, Nationality.ITA, true));
+    }
+
+    // Metodo di supporto per aggiungere il giocatore sia alla lista che alla tabella
+    private void addPlayerToTable(Player p) {
+        playersList.add(p);
+        tableModel.addRow(new Object[]{
+                p.getName(),
+                p.getSurname(),
+                p.getNumberOfTshirt(),
+                p.getPosition(),
+                p.getNationality(),
+                p.isCaptain() ? "Yes" : "No"
+        });
     }
 
     private void addPlayer(ActionEvent e) {
@@ -107,7 +140,7 @@ public class PlayerManagerGUI extends JFrame {
                     (Nationality) nationalityCombo.getSelectedItem(),
                     captainCheck.isSelected()
             );
-            listModel.addElement(p);
+            addPlayerToTable(p);
             clearForm();
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
@@ -115,14 +148,15 @@ public class PlayerManagerGUI extends JFrame {
     }
 
     private void updatePlayer(ActionEvent e) {
-        int selectedIndex = playerList.getSelectedIndex();
-        if (selectedIndex == -1) {
-            JOptionPane.showMessageDialog(this, "Select a player from the list to update.", "Warning", JOptionPane.WARNING_MESSAGE);
+        int selectedRow = playerTable.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a player from the table to update.", "Warning", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         try {
-            Player p = listModel.get(selectedIndex);
+            // Aggiorna l'oggetto Player
+            Player p = playersList.get(selectedRow);
             p.setName(nameField.getText());
             p.setSurname(surnameField.getText());
             p.setNumberOfTshirt((Integer) numberSpinner.getValue());
@@ -130,7 +164,14 @@ public class PlayerManagerGUI extends JFrame {
             p.setNationality((Nationality) nationalityCombo.getSelectedItem());
             p.setCaptain(captainCheck.isSelected());
 
-            playerList.repaint();
+            // Aggiorna la riga visiva nella tabella
+            tableModel.setValueAt(p.getName(), selectedRow, 0);
+            tableModel.setValueAt(p.getSurname(), selectedRow, 1);
+            tableModel.setValueAt(p.getNumberOfTshirt(), selectedRow, 2);
+            tableModel.setValueAt(p.getPosition(), selectedRow, 3);
+            tableModel.setValueAt(p.getNationality(), selectedRow, 4);
+            tableModel.setValueAt(p.isCaptain() ? "Yes" : "No", selectedRow, 5);
+
             JOptionPane.showMessageDialog(this, "Player updated successfully!", "Info", JOptionPane.INFORMATION_MESSAGE);
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Validation Error", JOptionPane.ERROR_MESSAGE);
@@ -138,9 +179,10 @@ public class PlayerManagerGUI extends JFrame {
     }
 
     private void deletePlayer(ActionEvent e) {
-        int selectedIndex = playerList.getSelectedIndex();
-        if (selectedIndex != -1) {
-            listModel.remove(selectedIndex);
+        int selectedRow = playerTable.getSelectedRow();
+        if (selectedRow != -1) {
+            playersList.remove(selectedRow);      // Rimuove dall'array
+            tableModel.removeRow(selectedRow);    // Rimuove dalla grafica
             clearForm();
         } else {
             JOptionPane.showMessageDialog(this, "Select a player to delete.", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -157,7 +199,7 @@ public class PlayerManagerGUI extends JFrame {
     }
 
     private void clearForm() {
-        playerList.clearSelection();
+        playerTable.clearSelection();
         nameField.setText("");
         surnameField.setText("");
         numberSpinner.setValue(10);
