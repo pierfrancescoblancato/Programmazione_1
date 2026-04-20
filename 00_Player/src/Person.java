@@ -29,7 +29,7 @@ enum Nationality {
         return flag;
     }
 }
-public class Person extends objext {
+public class Person {
     private String name;
     private String surname;
     private String dateBirth = "01/01/1970";
