@@ -29,7 +29,7 @@ enum Nationality {
         return flag;
     }
 }
-public class Person {
+public class Person extends Object {
     private String name;
     private String surname;
     private String dateBirth = "01/01/1970";
@@ -127,4 +127,7 @@ public class Person {
         String result = surname + name + dateBirthClean + genereStr;
         return result;
     }
+
+
+
 }
