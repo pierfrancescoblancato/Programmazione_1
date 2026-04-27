@@ -1,63 +1,74 @@
-import java.time.Duration;
-import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Stopover {
 
     private Car car;
-    private LocalDateTime timestampIn;
-    private LocalDateTime timestampOut;
+    private long timeIn;
+    private long timeOut;
     private int position;
-    private double price;
+    private int priceForMillis;
 
-    public Stopover(Car car, int position) {
+
+    public Stopover(Car car, int position, int priceForMillis) {
         this.car = car;
         this.position = position;
-        this.timestampIn = LocalDateTime.now();
-        this.timestampOut = null;
-        this.price = 0.2;
+        this.timeIn = System.currentTimeMillis();
+        this.timeOut = 0;
+        this.priceForMillis = priceForMillis;
     }
 
     public Car getCar() {
         return car;
     }
 
-    public LocalDateTime getTimestampIn() {
-        return timestampIn;
+    public long getTimeIn() {
+        return timeIn;
     }
 
-    public LocalDateTime getTimestampOut() {
-        return timestampOut;
+    public long getTimeOut() {
+        return timeOut;
     }
 
     public int getPosition() {
         return position;
     }
 
-    public double getPrice() {
-        return price;
+    public double getpriceForMillis() {
+        return priceForMillis;
     }
 
-    public void setTimestampOut(LocalDateTime timestampOut) {
-        this.timestampOut = timestampOut;
+    public void setTimeOut(long timeOut) {
+        this.timeOut = timeOut;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPriceForMillis(int priceForMillis) {
+        this.priceForMillis = priceForMillis;
     }
+
 
     public double getTotalPrice(){
-        if(this.timestampIn == null || this.timestampOut == null) return 0.0;
-        Duration duration = Duration.between(this.timestampIn, this.timestampOut);
-        double totalMs = duration.toNanos() / 1_000_000.0;
-        return totalMs * this.price;
+        if(this.timeIn == 0 || this.timeOut == 0) return 0.0;
+        return (this.timeOut - this.timeIn) * this.priceForMillis;
     }
 
     @Override
     public String toString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+        String inStr = sdf.format(new Date(timeIn));
+
+        String outStr;
+        if (timeOut == 0) {
+            outStr = "Ancora in sosta";
+        } else {
+            outStr = sdf.format(new Date(timeOut));
+        }
+
         return "Stopover{" +
                 "car=" + car.getPlate() +
-                ", in=" + timestampIn +
-                ", out=" + timestampOut +
+                ", in=" + inStr +
+                ", out=" + outStr +
                 ", position=" + position +
                 ", price=" + getTotalPrice() +
                 '}';

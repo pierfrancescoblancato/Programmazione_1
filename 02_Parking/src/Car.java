@@ -1,5 +1,5 @@
 class Car{
-    private static String plate;
+    private  String plate;
 
     public Car() {
     }
@@ -7,15 +7,12 @@ class Car{
         this.plate = plate;
     }
 
-    public static String getPlate() {
+    public  String getPlate() {
         return plate;
     }
 
-    public static void setPlate(String plate) {
-        Car.plate = plate;
+    public void setPlate(String plate) {
+        this.plate = plate;
     }
-
-
-
 }
 

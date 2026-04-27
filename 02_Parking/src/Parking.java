@@ -1,10 +1,14 @@
 import java.util.ArrayList;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Parking {
 
     Car[] place;
     ArrayList<Stopover> history = new ArrayList<>();
+    int priceForMillis = 2;
+
+    public Parking() {
+    }
 
     public Parking(int capacity) {
         this.place = new Car[capacity];
@@ -18,22 +22,36 @@ public class Parking {
         this.place = place;
     }
 
+    public ArrayList<Stopover> getHistory() {
+        return history;
+    }
+
+    public void setHistory(ArrayList<Stopover> history) {
+        this.history = history;
+    }
+
+    public int getPriceForMillis() {
+        return priceForMillis;
+    }
+
+    public void setPriceForMillis(int priceForMillis) {
+        this.priceForMillis = priceForMillis;
+    }
+
     public void enterCar(Car car) {
         for(int i = 0; i < place.length; i++){
             if(place[i] != null && place[i].equals(car)){
-                System.out.println("Car already entered.");
-                return;
+                System.out.println("Car " + car.getPlate() + " already entered.");                return;
             }
         }
         for(int i = 0; i < place.length; i++ ){
             if(place[i] == null){
                 place[i] = car;
 
-                // Crea il ticket e lo salva nello storico
-                Stopover ticket = new Stopover(car, i);
+                Stopover ticket = new Stopover(car, i, priceForMillis);
                 history.add(ticket);
 
-                System.out.println("Car parked: " + place[i] + " (Ticket opened)");
+                System.out.println("Car parked: " + place[i] + " at spot " + i + " (Ticket opened)");
                 return;
             }
         }
@@ -48,8 +66,8 @@ public class Parking {
 
                 // Cerca il ticket di questa macchina e registra l'orario di uscita
                 for(Stopover ticket : history) {
-                    if(ticket.getCar().equals(car) && ticket.getTimestampOut() == null) {
-                        ticket.setTimestampOut(LocalDateTime.now());
+                    if(ticket.getCar().equals(car) && ticket.getTimeOut() == 0) {
+                        ticket.setTimeOut(System.currentTimeMillis());
                         System.out.println("Ticket closed: " + ticket.toString());
                         break;
                     }
@@ -62,8 +80,8 @@ public class Parking {
 
     public int currentCapacity(){
         int count = 0;
-        for(int i = 0; i < place.length; i++){
-            if(place[i] != null){
+        for (Car c : place) {
+            if (c != null) {
                 count++;
             }
         }
@@ -78,5 +96,13 @@ public class Parking {
             }
         }
         return count;
+    }
+
+    public double getAmount(){
+        int amount = 0;
+        for(Stopover ticket : history){
+            amount += ticket.getTotalPrice();
+        }
+        return amount;
     }
 }
