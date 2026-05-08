@@ -3,23 +3,23 @@ import java.util.Date;
 
 public class Stopover {
 
-    private Car car;
+    private Vehicle vehicle;
     private long timeIn;
     private long timeOut;
     private int position;
     private int priceForMillis;
 
 
-    public Stopover(Car car, int position, int priceForMillis) {
-        this.car = car;
+    public Stopover(Vehicle vehicle, int position, int priceForMillis) {
+        this.vehicle = vehicle;
         this.position = position;
         this.timeIn = System.currentTimeMillis();
         this.timeOut = 0;
         this.priceForMillis = priceForMillis;
     }
 
-    public Car getCar() {
-        return car;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
     public long getTimeIn() {
@@ -60,17 +60,18 @@ public class Stopover {
 
         String outStr;
         if (timeOut == 0) {
-            outStr = "Ancora in sosta";
+            outStr = "Stopover now";
         } else {
             outStr = sdf.format(new Date(timeOut));
         }
 
         return "Stopover{" +
-                "car=" + car.getPlate() +
-                ", in=" + inStr +
-                ", out=" + outStr +
-                ", position=" + position +
-                ", price=" + getTotalPrice() +
+                "plate: " + vehicle.getPlate() +
+                ", in: " + inStr +
+                ", out: " + outStr +
+                ", position: " + position +
+                ", totalPrice: " + getTotalPrice() +
+                ", price: " + getpriceForMillis() +
                 '}';
     }
 }

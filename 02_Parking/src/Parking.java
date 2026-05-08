@@ -1,106 +1,93 @@
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Parking {
 
-    Car[] place;
-    ArrayList<Stopover> history = new ArrayList<>();
-    int priceForMillis = 2;
+    private int places;
+    private int priceForMillisCar = 1;
+    private int priceForMillisVan = 2;
+
+    private ArrayList<Vehicle> currentVehicles = new ArrayList<>();
+    private ArrayList<Stopover> history = new ArrayList<>();
 
     public Parking() {
+        this.places = 10;
     }
 
-    public Parking(int capacity) {
-        this.place = new Car[capacity];
+    public Parking(int places) {
+        this.places = places;
     }
 
-    public Car[] getPlace() {
-        return place;
+    public int getPlace() { return places; }
+    public void setPlace(int places) { this.places = places; }
+
+    public int getPriceForMillisCar() { return priceForMillisCar; }
+    public void setPriceForMillisCar(int priceForMillisCar) { this.priceForMillisCar = priceForMillisCar; }
+
+    public int getPriceForMillisVan() { return priceForMillisVan; }
+    public void setPriceForMillisVan(int priceForMillisVan) { this.priceForMillisVan = priceForMillisVan; }
+
+    public ArrayList<Stopover> getHistory() { return history; }
+    public void setHistory(ArrayList<Stopover> history) { this.history = history; }
+
+    public int currentCapacity() {
+        return currentVehicles.size();
+    }
+    public int getFreeCurretPlace() {
+        return places - currentVehicles.size();
     }
 
-    public void setPlace(Car[] place) {
-        this.place = place;
-    }
-
-    public ArrayList<Stopover> getHistory() {
-        return history;
-    }
-
-    public void setHistory(ArrayList<Stopover> history) {
-        this.history = history;
-    }
-
-    public int getPriceForMillis() {
-        return priceForMillis;
-    }
-
-    public void setPriceForMillis(int priceForMillis) {
-        this.priceForMillis = priceForMillis;
-    }
-
-    public void enterCar(Car car) {
-        for(int i = 0; i < place.length; i++){
-            if(place[i] != null && place[i].equals(car)){
-                System.out.println("Car " + car.getPlate() + " already entered.");                return;
-            }
-        }
-        for(int i = 0; i < place.length; i++ ){
-            if(place[i] == null){
-                place[i] = car;
-
-                Stopover ticket = new Stopover(car, i, priceForMillis);
-                history.add(ticket);
-
-                System.out.println("Car parked: " + place[i] + " at spot " + i + " (Ticket opened)");
+    public void enterVehicle(Vehicle vehicle) {
+        for (Vehicle v : currentVehicles) {
+            if (v.equals(vehicle)) {
+                System.out.println("Vehicle " + vehicle.getPlate() + " already entered.");
                 return;
             }
         }
-        System.out.println("The parking is full");
+
+        if (currentVehicles.size() < places) {
+            int actualPrice = (vehicle instanceof Van) ? priceForMillisVan : priceForMillisCar;
+
+            currentVehicles.add(vehicle);
+
+            Stopover ticket = new Stopover(vehicle, currentVehicles.indexOf(vehicle), actualPrice);
+            history.add(ticket);
+
+            System.out.println("Vehicle parked: " + vehicle.getPlate() + " (Ticket opened)");
+        } else {
+            System.out.println("The parking is full");
+        }
     }
 
-    public void exitCar(Car car) {
-        for(int i = 0; i < place.length; i++){
-            if(place[i] != null && place[i].equals(car)){
-                System.out.println("Car left unparked: " + place[i]);
-                place[i] = null;
+    public void exitVehicle(Vehicle vehicle) {
+        Vehicle toRemove = null;
 
-                // Cerca il ticket di questa macchina e registra l'orario di uscita
-                for(Stopover ticket : history) {
-                    if(ticket.getCar().equals(car) && ticket.getTimeOut() == 0) {
-                        ticket.setTimeOut(System.currentTimeMillis());
-                        System.out.println("Ticket closed: " + ticket.toString());
-                        break;
-                    }
+        for (Vehicle v : currentVehicles) {
+            if (v.equals(vehicle)) {
+                toRemove = v;
+                break;
+            }
+        }
+
+        if (toRemove != null) {
+            currentVehicles.remove(toRemove);
+            System.out.println("Vehicle left: " + vehicle.getPlate());
+
+            for (Stopover ticket : history) {
+                if (ticket.getVehicle().equals(vehicle) && ticket.getTimeOut() == 0) {
+                    ticket.setTimeOut(System.currentTimeMillis());
+                    System.out.println("Ticket closed: " + ticket.toString());
+                    break;
                 }
-                return;
             }
+        } else {
+            System.out.println("Error: Vehicle not found in parking.");
         }
-        System.out.println("Error: Car not found in parking.");
     }
 
-    public int currentCapacity(){
-        int count = 0;
-        for (Car c : place) {
-            if (c != null) {
-                count++;
-            }
-        }
-        return count;
-    }
+    public double getAmount() {
+        double amount = 0;
 
-    public int getFreeCurretPlace(){
-        int count = 0;
-        for(int i = 0; i < place.length; i++){
-            if(place[i] == null){
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public double getAmount(){
-        int amount = 0;
-        for(Stopover ticket : history){
+        for (Stopover ticket : history) {
             amount += ticket.getTotalPrice();
         }
         return amount;
