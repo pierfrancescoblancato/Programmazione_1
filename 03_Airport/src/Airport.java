@@ -1,21 +1,63 @@
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Airport {
-    List<Flights> fly = new ArrayList<Flights>();
+    List<Flights> flies = new ArrayList<Flights>();
+    private String name;
+    private String city;
+    private String iata;
 
-    public List<Flights> getFly() {
-        return fly;
+    public Airport( String name, String city, String iata) {
+        this.name = name;
+        this.city = city;
+        this.iata = iata;
     }
 
-    public void setFly(List<Flights> fly) {
-        this.fly = fly;
+    public List<Flights> getFlies() {
+        return flies;
     }
 
-    public void addFly(Flights f) {
-        fly.add(f);
+    public void setgetFlies(List<Flights> flies) {
+        this.flies = flies;
     }
-    public void removeFly(Flights f) {
-        fly.remove(f);
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getIata() {
+        return iata;
+    }
+
+    public void setIata(String iata) {
+        this.iata = iata;
+    }
+
+    public String printFly() {
+        String s = "";
+        for (Flights fly : this.flies) {
+            s += fly.toString() + "\n";
+        }
+        return s;
+    }
+
+    @Override
+    public String toString() {
+        return "Airport{" +
+                "fly=" + flies +
+                '}';
     }
 }

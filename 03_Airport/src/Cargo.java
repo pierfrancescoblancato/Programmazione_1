@@ -12,8 +12,14 @@ public class Cargo extends Plane{
     }
 
     @Override
-    public int getMaxCapacity() {
+    public float getWeight() {
+        return (float) (this.maxCapacity * 1.1);
+    }
 
-        return this.maxCapacity;
+    @Override
+    public String toString() {
+        return "Cargo{" +
+                "maxCapacity=" + maxCapacity +
+                '}';
     }
 }

@@ -33,6 +33,14 @@ public abstract class Plane {
         this.producer = producer;
     }
 
-    public abstract int getMaxCapacity();
+    public abstract float getWeight();
 
+    @Override
+    public String toString() {
+        return "Plane{" +
+                "id=" + id +
+                ", model='" + model + '\'' +
+                ", producer='" + producer + '\'' +
+                '}';
+    }
 }

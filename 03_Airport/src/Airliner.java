@@ -10,8 +10,21 @@ public class Airliner extends Plane{
         this.maxSeats = maxSeats;
     }
 
+    public int getMaxSeats() {
+        return maxSeats;
+    }
+
+    public void setMaxSeats(int maxSeats) {
+        this.maxSeats = maxSeats;
+    }
+
     @Override
-    public int getMaxCapacity() {
-        return this.maxSeats;
+    public float getWeight() {
+        return this.maxSeats * 70;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " [Posti: " + maxSeats + "]";
     }
 }
