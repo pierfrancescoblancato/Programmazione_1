@@ -1,25 +1,29 @@
 public class Cargo extends Plane{
 
-    private int maxCapacity;
+    private float capacity;
 
-    public Cargo(int id, String model, String producer,int maxCapacity) {
+    public Cargo(int id, String model, String producer,float capacity) {
         super(id,model,producer);
-        this.maxCapacity = maxCapacity;
+        this.capacity = capacity;
     }
 
-    public void setMaxCapacity(int maxCapacity) {
-        this.maxCapacity = maxCapacity;
+    public float getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(float capacity) {
+        this.capacity = capacity;
     }
 
     @Override
     public float getWeight() {
-        return (float) (this.maxCapacity * 1.1);
+        return this.capacity * 1000.0f;
     }
 
     @Override
     public String toString() {
         return "Cargo{" +
-                "maxCapacity=" + maxCapacity +
+                "maxCapacity=" + capacity +
                 '}';
     }
 }

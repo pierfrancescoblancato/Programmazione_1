@@ -9,7 +9,7 @@ public abstract class Plane {
         this.producer = producer;
     }
 
-    public abstract int getMaxCapacity();
+    public abstract float getWeight();
 
     public int getId() {
         return id;

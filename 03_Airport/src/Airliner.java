@@ -20,7 +20,7 @@ public class Airliner extends Plane{
 
     @Override
     public float getWeight() {
-        return this.maxSeats * 70;
+        return this.maxSeats * 70.0f;
     }
 
     @Override

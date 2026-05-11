@@ -1,9 +1,8 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Airport {
-    List<Flights> flies = new ArrayList<Flights>();
+    List<Flight> flies = new ArrayList<Flight>();
     private String name;
     private String city;
     private String iata;
@@ -14,11 +13,11 @@ public class Airport {
         this.iata = iata;
     }
 
-    public List<Flights> getFlies() {
+    public List<Flight> getFlies() {
         return flies;
     }
 
-    public void setgetFlies(List<Flights> flies) {
+    public void setgetFlies(List<Flight> flies) {
         this.flies = flies;
     }
 
@@ -48,7 +47,7 @@ public class Airport {
 
     public String printFly() {
         String s = "";
-        for (Flights fly : this.flies) {
+        for (Flight fly : this.flies) {
             s += fly.toString() + "\n";
         }
         return s;
