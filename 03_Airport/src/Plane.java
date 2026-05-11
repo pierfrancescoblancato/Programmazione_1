@@ -9,6 +9,8 @@ public abstract class Plane {
         this.producer = producer;
     }
 
+    public abstract int getMaxCapacity();
+
     public int getId() {
         return id;
     }
@@ -31,16 +33,5 @@ public abstract class Plane {
 
     public void setProducer(String producer) {
         this.producer = producer;
-    }
-
-    public abstract float getWeight();
-
-    @Override
-    public String toString() {
-        return "Plane{" +
-                "id=" + id +
-                ", model='" + model + '\'' +
-                ", producer='" + producer + '\'' +
-                '}';
     }
 }
