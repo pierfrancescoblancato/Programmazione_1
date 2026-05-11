@@ -6,9 +6,9 @@ import java.io.*;
 public class FlightMenagement {
     List<Flight> allNationalFlights = new ArrayList<Flight>();
 
-    public void saveToFile() {
+    public void saveToFile(String filename) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("/home/pierfrancescoblancato/IdeaProjects/Programmazione_1/flights.txt"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
             System.out.println("Saving " + allNationalFlights.size() + " flights...");
 
             for (Flight f : allNationalFlights) {
@@ -37,9 +37,9 @@ public class FlightMenagement {
         }
     }
 
-    public void loadFromFile() {
+    public void loadFromFile(String filename) {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("/home/pierfrancescoblancato/IdeaProjects/Programmazione_1/flights.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
             allNationalFlights.clear();
 
