@@ -22,8 +22,6 @@ public class Cargo extends Plane{
 
     @Override
     public String toString() {
-        return "Cargo{" +
-                "maxCapacity=" + capacity +
-                '}';
+        return super.toString() + " [Capacity: " + capacity + " tons]";
     }
 }

@@ -17,7 +17,7 @@ public class Airport {
         return flies;
     }
 
-    public void setgetFlies(List<Flight> flies) {
+    public void setFlies(List<Flight> flies) {
         this.flies = flies;
     }
 

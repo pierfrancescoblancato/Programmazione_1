@@ -1,10 +1,14 @@
 import java.time.LocalDateTime;
 import java.util.List;
 
+import java.io.*;
+
 public class Main {
     public static void main(String[] args) {
 
         FlightMenagement archive = new FlightMenagement();
+
+        archive.loadFromFile();
 
         Airport cta = new Airport("Fontanarossa", "Catania", "CTA");
         Airport fco = new Airport("Fiumicino", "Roma", "FCO");
@@ -14,16 +18,16 @@ public class Main {
         Plane p2 = new Cargo(505, "747-8F", "Boeing", 1.4f);
 
         Flight f1 = new Flight(
-                cta.getName(),
-                fco.getName(),
+                cta.getCity(),
+                fco.getCity(),
                 LocalDateTime.now(),
                 LocalDateTime.now().plusHours(1),
                 p1
         );
 
         Flight f2 = new Flight(
-                fco.getName(),
-                mxp.getName(),
+                fco.getCity(),
+                mxp.getCity(),
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(1).plusHours(2),
                 p2
@@ -31,21 +35,24 @@ public class Main {
 
         archive.addNationalFLight(f1);
         archive.addNationalFLight(f2);
+        archive.saveToFile();
 
-        System.out.println("=== ALL FLIGHTS IN ARCHIVE ===");
-        System.out.println(archive.printAllArchiveFly());
+//        File f = new File("flights.txt");
+//        System.out.println("File exists: " + f.exists());
+//        System.out.println("File path: " + f.getAbsolutePath());
 
-        System.out.println("=== ESTIMATED WEIGHTS ===");
-        System.out.println("Estimated Weight Flight 1: " + f1.getPlane().getWeight() + " kg");
-        System.out.println("Estimated Weight Flight 2: " + f2.getPlane().getWeight() + " kg");
-
-
-        System.out.println("=== SEARCH RESULTS: Departing from Catania ===");
-        List<Flight> filtered = archive.search("Catania","Roma");
-
-        for (Flight f : filtered) {
-            System.out.println(f);
-        }
+//        System.out.println("=== ALL FLIGHTS IN ARCHIVE ===");
+//        System.out.println(archive.printAllArchiveFly());
+//
+//        System.out.println("=== ESTIMATED WEIGHTS ===");
+//        System.out.println("Estimated Weight Flight 1: " + f1.getPlane().getWeight() + " kg");
+//        System.out.println("Estimated Weight Flight 2: " + f2.getPlane().getWeight() + " kg");
+//
+//
+//        System.out.println("=== SEARCH RESULTS: Departing from Catania ===");
+//
+//        archive.search("Catania","Roma");
+//        archive.search("Catania");
 
     }
 }
