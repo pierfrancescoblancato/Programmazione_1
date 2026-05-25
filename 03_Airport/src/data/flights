@@ -1,2 +1,26 @@
-Catania;Roma;2026-05-11T12:52:27.972897958;2026-05-11T13:52:27.975840536;101;A320;Airbus;AIRLINER;180
-Roma;Milano;2026-05-12T12:52:27.975896549;2026-05-12T14:52:27.975974842;505;747-8F;Boeing;CARGO;1.4
+{
+"departureCity": "Catania",
+"arrivalCity": "Roma",
+"departureTime": "2026-05-25T09:45:00.966156112",
+"arrivalTime": "2026-05-25T10:45:00.968666631",
+"plane": {
+    "id": "101",
+    "model": "A320",
+    "producer": "Airbus"
+    "type": "AIRLINER",
+    "value": 180
+     },
+}
+{
+"departureCity": "Roma",
+"arrivalCity": "Milano",
+"departureTime": "2026-05-26T09:45:00.968725368",
+"arrivalTime": "2026-05-26T11:45:00.968754911",
+"plane": {
+    "id": "505",
+    "model": "747-8F",
+    "producer": "Boeing"
+    "type": "CARGO",
+    "value": 1400.0kg
+     },
+}

@@ -12,19 +12,19 @@ public class FlightMenagement {
             System.out.println("Saving " + allNationalFlights.size() + " flights...");
 
             for (Flight f : allNationalFlights) {
-                String line = f.getDepartureCity() + ";" +
-                        f.getArrivalCity() + ";" +
-                        f.getDepartureTime() + ";" +
-                        f.getArrivalTime() + ";" +
-                        f.getPlane().getId() + ";" +
-                        f.getPlane().getModel() + ";" +
-                        f.getPlane().getProducer() + ";";
-
-                if (f.getPlane() instanceof Airliner) {
-                    line += "AIRLINER;" + ((Airliner) f.getPlane()).getMaxSeats();
-                } else {
-                    line += "CARGO;" + ((Cargo) f.getPlane()).getCapacity();
-                }
+                String line = "{\n" +
+                        "\"departureCity\": \"" + f.getDepartureCity() + "\",\n" +
+                        "\"arrivalCity\": \"" + f.getArrivalCity() + "\",\n" +
+                        "\"departureTime\": \"" + f.getDepartureTime() + "\",\n" +
+                        "\"arrivalTime\": \"" + f.getArrivalTime() + "\",\n" +
+                        "\"plane\": {\n" +
+                        "    \"id\": \"" + f.getPlane().getId() + "\",\n" +
+                        "    \"model\": \"" + f.getPlane().getModel() + "\",\n" +
+                        "    \"producer\": \"" + f.getPlane().getProducer() + "\"\n" +
+                        "    \"type\": \"" + (f.getPlane() instanceof Airliner ? "AIRLINER" : "CARGO") + "\",\n" +
+                        "    \"value\": " + (f.getPlane() instanceof Airliner ? ((Airliner) f.getPlane()).getMaxSeats() : ((Cargo) f.getPlane()).getCapacity()*1000+"kg") + "\n" +
+                        "     },\n" +
+                        "}";
 
                 System.out.println("Writing: " + line);  // DEBUG
                 writer.write(line);
