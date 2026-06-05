@@ -7,7 +7,7 @@ public class Main {
         String filename = "/home/pierfrancescoblancato/IdeaProjects/Programmazione_1/03_Airport/src/data/flights";
         FlightMenagement archive = new FlightMenagement();
 
-        //archive.loadFromFile(filename);
+        archive.loadFromFile(filename);
 
         Airport cta = new Airport("Fontanarossa", "Catania", "CTA");
         Airport fco = new Airport("Fiumicino", "Roma", "FCO");
