@@ -7,7 +7,9 @@ public class Parking {
     private int priceForMillisVan = 2;
 
     private ArrayList<Vehicle> currentVehicles = new ArrayList<>();
-    private ArrayList<Stopover> history = new ArrayList<>();
+    private ArrayList<StopOver> history = new ArrayList<>();
+
+    StopOverManagement archive = new StopOverManagement();
 
     public Parking() {
         this.places = 10;
@@ -26,8 +28,8 @@ public class Parking {
     public int getPriceForMillisVan() { return priceForMillisVan; }
     public void setPriceForMillisVan(int priceForMillisVan) { this.priceForMillisVan = priceForMillisVan; }
 
-    public ArrayList<Stopover> getHistory() { return history; }
-    public void setHistory(ArrayList<Stopover> history) { this.history = history; }
+    public ArrayList<StopOver> getHistory() { return history; }
+    public void setHistory(ArrayList<StopOver> history) { this.history = history; }
 
     public int currentCapacity() {
         return currentVehicles.size();
@@ -49,8 +51,11 @@ public class Parking {
 
             currentVehicles.add(vehicle);
 
-            Stopover ticket = new Stopover(vehicle, currentVehicles.indexOf(vehicle), actualPrice);
+            StopOver ticket = new StopOver(vehicle, currentVehicles.indexOf(vehicle), actualPrice);
             history.add(ticket);
+
+            //salvataggio nel file quando entra
+            archive.saveToFile(history);
 
             System.out.println("Vehicle parked: " + vehicle.getPlate() + " (Ticket opened)");
         } else {
@@ -72,13 +77,14 @@ public class Parking {
             currentVehicles.remove(toRemove);
             System.out.println("Vehicle left: " + vehicle.getPlate());
 
-            for (Stopover ticket : history) {
+            for (StopOver ticket : history) {
                 if (ticket.getVehicle().equals(vehicle) && ticket.getTimeOut() == 0) {
                     ticket.setTimeOut(System.currentTimeMillis());
                     System.out.println("Ticket closed: " + ticket.toString());
                     break;
                 }
             }
+            archive.saveToFile(history);
         } else {
             System.out.println("Error: Vehicle not found in parking.");
         }
@@ -87,7 +93,7 @@ public class Parking {
     public double getAmount() {
         double amount = 0;
 
-        for (Stopover ticket : history) {
+        for (StopOver ticket : history) {
             amount += ticket.getTotalPrice();
         }
         return amount;
