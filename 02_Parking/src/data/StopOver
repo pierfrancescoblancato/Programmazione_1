@@ -1,0 +1,3 @@
+Stopover{plate: AB123CD;type: car;, in: 05/06/2026 15:51:40;, out: 05/06/2026 15:51:40;, position: 0;, totalPrice: 265.0;, price: 1}
+Stopover{plate: CD123AB;type: van;, in: 05/06/2026 15:51:40;, out: 05/06/2026 15:51:40;, position: 1;, totalPrice: 18.0;, price: 2}
+Stopover{plate: ZZ999XX;type: car;, in: 05/06/2026 15:51:40;, out: Stopover now;, position: 2;, totalPrice: 0.0;, price: 1}
