@@ -9,6 +9,8 @@
       <module fileurl="file://$PROJECT_DIR$/03_Airport/03_Airport.iml" filepath="$PROJECT_DIR$/03_Airport/03_Airport.iml" />
       <module fileurl="file://$PROJECT_DIR$/04_Thread/04_Thread.iml" filepath="$PROJECT_DIR$/04_Thread/04_Thread.iml" />
       <module fileurl="file://$PROJECT_DIR$/05_Formula1/05_Formula1.iml" filepath="$PROJECT_DIR$/05_Formula1/05_Formula1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/06_TryCatch/06_TryCatch.iml" filepath="$PROJECT_DIR$/06_TryCatch/06_TryCatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/07_ToDoList/07_ToDoList.iml" filepath="$PROJECT_DIR$/07_ToDoList/07_ToDoList.iml" />
       <module fileurl="file://$PROJECT_DIR$/Parking/Parking.iml" filepath="$PROJECT_DIR$/Parking/Parking.iml" />
       <module fileurl="file://$PROJECT_DIR$/Programmazione_1.iml" filepath="$PROJECT_DIR$/Programmazione_1.iml" />
     </modules>
