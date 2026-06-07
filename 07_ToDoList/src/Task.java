@@ -18,6 +18,7 @@ public class Task {
     private Priority priority;
     private TaskStatus taskStatus;
     private boolean favorites;
+    private static int taskCount = 0;
 
     public Task(String title, String description, long scheduledDateTime, Priority priority, TaskStatus taskStatus, boolean favorites) {
         setTitle(title);
@@ -26,6 +27,7 @@ public class Task {
         this.priority = priority;
         this.taskStatus = taskStatus;
         this.favorites = favorites;
+        taskCount++;
     }
 
     public String getTitle() {
@@ -82,6 +84,14 @@ public class Task {
 
     public void setFavorites(boolean favorites) {
         this.favorites = favorites;
+    }
+
+    public static int getTaskCount() {
+        return taskCount;
+    }
+
+    public static void setTaskCount(int taskCount) {
+        Task.taskCount = taskCount;
     }
 
     @Override
