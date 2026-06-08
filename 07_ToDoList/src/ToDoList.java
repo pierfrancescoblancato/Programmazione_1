@@ -1,7 +1,11 @@
+import exceptionsCustoms.*;
+import tasks.*;
+import interfaceTask.ToDoListManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToDoList implements TaskManager {
+public class ToDoList implements ToDoListManager {
     private ArrayList<Task> tasks = new ArrayList<>();
 
     public ToDoList() {
@@ -18,11 +22,10 @@ public class ToDoList implements TaskManager {
 
     public void addTask(Task task) {
         for (Task t : tasks) {
-            if (task.equals(t)) throw new IllegalArgumentException("Task already exists");
+            if (task.equals(t)) throw new DuplicateTaskException("Task already exists");
         }
         tasks.add(task);
         System.out.println("-> Tasks added successfully!");
-
     }
 
     public Task findTaskByTitle(String title) {
@@ -31,7 +34,7 @@ public class ToDoList implements TaskManager {
                 return t;
             }
         }
-        return null;
+        throw new TaskNotFoundException("No such task found");
     }
 
     public boolean removeTaskByTitle(String title) {
@@ -41,7 +44,7 @@ public class ToDoList implements TaskManager {
                 return true;
             }
         }
-        return false;
+        throw new TaskNotFoundException("No such task found");
     }
 
     public List<Task> getAllTasks(){
@@ -52,17 +55,19 @@ public class ToDoList implements TaskManager {
         for (Task t : tasks) {
             if (t.getTitle().equalsIgnoreCase(title)) {
                 t.setTaskStatus(setTaskStatus);
-                break;
+                return;
             }
         }
+        throw new TaskNotFoundException("No such task found");
     }
 
     public void toggleFavorite(String title) {
         for (Task t : tasks) {
             if (t.getTitle().equalsIgnoreCase(title)) {
                 t.setFavorites(!t.isFavorites());
-                break;
+                return;
             }
         }
+        throw new TaskNotFoundException("No such task found");
     }
 }

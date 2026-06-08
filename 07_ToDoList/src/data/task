@@ -1,0 +1,17 @@
+TYPE:TASK
+title:Buy milk
+description:Get semi-skimmed milk
+scheduledDateTime:1780912779781
+priority:LOW
+status:COMPLETED
+favorites:false
+---
+TYPE:URGENT
+deadline:0
+title:Study Java
+description:Review inheritance and polymorphism
+scheduledDateTime:1780912779783
+priority:HIGH
+status:IN_PROGRESS
+favorites:true
+---

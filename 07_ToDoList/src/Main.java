@@ -1,54 +1,46 @@
+import exceptionsCustoms.*;
+import interfaceTask.ToDoListManager;
+import tasks.*;
+
+import javax.swing.*;
+import java.util.ArrayList;
+
 public class Main {
-    /*1. Eccezioni personalizzate
-     2. File I/O
-     3. IU
-     */
     public static void main(String[] args) {
-        TaskManager manager = new ToDoList();
+        SwingUtilities.invokeLater(() -> {
+            try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
+            catch (Exception ignored) {}
+            ToDoList manager = new ToDoList();
+            new UiToDoList(manager);
+        });
 
-        Task t1 = new Task(
-                "Buy milk",
-                "Get semi-skimmed milk",
-                System.currentTimeMillis(),
-                Task.Priority.LOW,
-                Task.TaskStatus.PENDING,
-                false
-        );
 
-        long oneDayInMilliseconds = 24 * 60 * 60 * 1000;
-        long dueDate = System.currentTimeMillis() + oneDayInMilliseconds;
+    ToDoListManager manager = new ToDoList();
+        TaskManagementFile fileManager = new TaskManagementFile();
 
-        Task t2 = new UrgentTask(
-                "Study Java",
-                "Review inheritance and polymorphism",
-                System.currentTimeMillis(),
-                Task.Priority.HIGH,
-                Task.TaskStatus.IN_PROGRESS,
-                false,
-                dueDate
-        );
+        Task t1 = new Task("Buy milk", "Get semi-skimmed milk",
+                System.currentTimeMillis(), Task.Priority.LOW, Task.TaskStatus.PENDING, false);
 
-        Task t3 = new RecurringTask(
-                "Go to the gym",
-                "Legs and shoulders workout",
-                System.currentTimeMillis(),
-                Task.Priority.MEDIUM,
-                Task.TaskStatus.PENDING,
-                false,
-                "Every Monday and Thursday"
-        );
+        long dueDate = System.currentTimeMillis() + (24 * 60 * 60 * 1000);
+
+        Task t2 = new UrgentTask("Study Java", "Review inheritance and polymorphism",
+                System.currentTimeMillis(), Task.Priority.HIGH, Task.TaskStatus.IN_PROGRESS, false, dueDate);
+
+        Task t3 = new RecurringTask("Go to the gym", "Legs and shoulders workout",
+                System.currentTimeMillis(), Task.Priority.MEDIUM, Task.TaskStatus.PENDING, false,
+                "Every Monday and Thursday");
 
         System.out.println("\n[TEST] Adding 3 tasks to the manager...");
         manager.addTask(t1);
         manager.addTask(t2);
         manager.addTask(t3);
-        System.out.println("\n[TEST] entered task number: "+ Task.getTaskCount());
 
+        System.out.println("\n[TEST] entered task number: " + Task.getTaskCount());
 
         System.out.println("\n[TEST] Verifying duplicate blocking (should throw an error):");
         try {
             manager.addTask(t1);
-        } catch (IllegalArgumentException e) {
+        } catch (DuplicateTaskException e) {
             System.out.println("-> OK! The system blocked the duplicate saying: " + e.getMessage());
         }
 
@@ -59,7 +51,7 @@ public class Main {
 
         System.out.println("\n[TEST] Toggling favorites on 'Study Java'...");
         manager.toggleFavorite("Study Java");
-        System.out.println("-> Is 'Study Java' in favorites now? " + manager.findTaskByTitle("study java").isFavorites());
+        System.out.println("-> Is 'Study Java' in favorites now? " + manager.findTaskByTitle("Study Java").isFavorites());
 
         System.out.println("\n[TEST] Changing status of 'Buy milk' to COMPLETED...");
         manager.updateTaskStatus("Buy milk", Task.TaskStatus.COMPLETED);
@@ -72,5 +64,12 @@ public class Main {
         for (Task t : manager.getAllTasks()) {
             System.out.println(t);
         }
+
+        System.out.println("\n[TEST] Saving tasks in background...");
+        Thread saveThread = new Thread(new FileSaveThread(fileManager, (ArrayList<Task>) manager.getAllTasks()));
+        saveThread.start();
+
+        System.out.println("\n[TEST] Loading tasks from file...");
+        ArrayList<Task> loaded = fileManager.loadFromFile();
     }
 }

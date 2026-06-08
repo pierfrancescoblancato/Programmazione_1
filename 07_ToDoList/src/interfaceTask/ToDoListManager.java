@@ -1,6 +1,9 @@
-import java.util.List;
+package interfaceTask;
 
-public interface TaskManager {
+import java.util.List;
+import tasks.*;
+
+public interface ToDoListManager {
 
     void addTask(Task task);
 

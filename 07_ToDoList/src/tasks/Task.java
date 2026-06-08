@@ -1,4 +1,6 @@
+package tasks;
 import java.util.Objects;
+import exceptionsCustoms.*;
 
 public class Task {
     public enum Priority {
@@ -36,7 +38,7 @@ public class Task {
 
     public void setTitle(String title) {
         if ( title == null||  title.trim().isEmpty()) {
-            throw new IllegalArgumentException("ERROR: the title is null or empty");
+            throw new InvalidTaskException("ERROR: the title is null or empty");
         }
         this.title = title.trim();
 
